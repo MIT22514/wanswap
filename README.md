@@ -1,7 +1,6 @@
 # wanswap
 
 [![ci](https://github.com/MIT22514/wanswap/actions/workflows/ci.yml/badge.svg)](https://github.com/MIT22514/wanswap/actions/workflows/ci.yml)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/MIT22514/wanswap/badge)](https://scorecard.dev/viewer/?uri=github.com/MIT22514/wanswap)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![CodeQL](https://github.com/MIT22514/wanswap/actions/workflows/codeql.yml/badge.svg)](https://github.com/MIT22514/wanswap/actions/workflows/codeql.yml)
 
@@ -17,6 +16,13 @@ hardware, at about **$0.50/hour**.
 > Demo video: *coming shortly.*
 
 ---
+
+## Repo quality
+
+CI runs the unit tests and syntax checks, CodeQL does static analysis, Dependabot keeps
+dependencies current, and OpenSSF Scorecard runs weekly via its CLI (the official GitHub
+Action is a Docker image on `gcr.io`, which currently refuses pulls — see
+`docs/GOTCHAS.md`). Branch protection requires the `ci` check.
 
 ## Why this exists
 
