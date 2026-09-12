@@ -10,27 +10,40 @@ jobs:
   analysis:
     runs-on: ubuntu-latest
     permissions:
-      security-events: write
       contents: read
-      actions: read
     steps:
       - uses: actions/checkout@v4
-      # The official ossf/scorecard-action is a Docker action published to gcr.io, and that
+      # The official ossf/scorecard-action is a Docker action pulled from gcr.io, and that
       # registry currently refuses pulls ("This API method requires billing to be enabled").
-      # Running the CLI avoids the registry entirely; results go to the Security tab as SARIF
-      # instead of being published to the public scorecard API (so no score badge).
+      # The CLI avoids the registry. Note it no longer supports SARIF output, so the score is
+      # written to the run summary rather than uploaded to the Security tab.
       - name: Run OpenSSF Scorecard
         env:
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          tag=$(curl -sSL https://api.github.com/repos/ossf/scorecard/releases/latest | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
+          tag=$(curl -sSL https://api.github.com/repos/ossf/scorecard/releases/latest \
+                | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
           ver=${tag#v}
-          curl -sSL -o scorecard.tar.gz "https://github.com/ossf/scorecard/releases/download/${tag}/scorecard_${ver}_linux_amd64.tar.gz"
+          curl -sSL -o scorecard.tar.gz \
+            "https://github.com/ossf/scorecard/releases/download/${tag}/scorecard_${ver}_linux_amd64.tar.gz"
           tar xzf scorecard.tar.gz
           ./scorecard --repo="github.com/${{ github.repository }}" \
-            --format sarif --output results.sarif --show-details || true
-      - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: results.sarif
+            --format json --output results.json
+      - name: Publish score to the run summary
+        if: always()
+        run: |
+          if [ ! -f results.json ]; then
+            echo "## OpenSSF Scorecard" >> "$GITHUB_STEP_SUMMARY"
+            echo "No results produced - see the step log above." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          {
+            echo "## OpenSSF Scorecard"
+            echo
+            echo "| check | score |"
+            echo "| --- | --- |"
+            jq -r '.checks[] | "| \(.name) | \(.score) |"' results.json
+            echo
+            jq -r '"**Overall: `\(.score) / 10`**"' results.json
+          } >> "$GITHUB_STEP_SUMMARY"
