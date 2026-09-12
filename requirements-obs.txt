@@ -1,3 +1,3 @@
 # Optional: only needed for scripts/obs_setup.py (OBS auto-configuration)
 -r requirements.txt
-obsws-python>=1.7
+obsws-python>=1.8.0
