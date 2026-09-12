@@ -1,0 +1,20 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+      - name: unit tests
+        run: python -m pytest tests/ -q
+      - name: python syntax
+        run: python -m py_compile src/client.py src/swap_service.py src/auth.py tools/faces.py scripts/obs_setup.py
+      - name: shell syntax
+        run: for f in scripts/*.sh; do bash -n "$f"; done

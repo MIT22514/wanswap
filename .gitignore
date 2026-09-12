@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+*.log
+.auth
+faces/*.jpg
+faces/*.png
+tools/faces/*.jpg
+my_face.*
+.pod_watch_state
+.pod_watch_pending
+.pytest_cache/
+**/__pycache__/
+.DS_Store

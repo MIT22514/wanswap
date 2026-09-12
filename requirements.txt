@@ -1,0 +1,7 @@
+# Tested set (Mac-side client). Pin changed deliberately, not incidentally.
+# The pod installs its own dependencies via scripts/bootstrap.sh.
+opencv-python==5.0.0.93
+requests==2.34.2
+websocket-client==1.9.2
+certifi==2026.7.22
+numpy==2.5.3
