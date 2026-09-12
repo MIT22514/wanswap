@@ -1,5 +1,10 @@
 # wanswap
 
+[![ci](https://github.com/MIT22514/wanswap/actions/workflows/ci.yml/badge.svg)](https://github.com/MIT22514/wanswap/actions/workflows/ci.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/MIT22514/wanswap/badge)](https://scorecard.dev/viewer/?uri=github.com/MIT22514/wanswap)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CodeQL](https://github.com/MIT22514/wanswap/actions/workflows/codeql.yml/badge.svg)](https://github.com/MIT22514/wanswap/actions/workflows/codeql.yml)
+
 **Run real-time models on a rented GPU and pipe the result into any app that takes a webcam.**
 
 Your laptop has a camera and no GPU. This runs the heavy model on a machine you rent by the
