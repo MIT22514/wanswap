@@ -28,8 +28,11 @@ jobs:
           curl -sSL -o scorecard.tar.gz \
             "https://github.com/ossf/scorecard/releases/download/${tag}/scorecard_${ver}_linux_amd64.tar.gz"
           tar xzf scorecard.tar.gz
+          # Some checks need a PAT (Branch-Protection can't be read with GITHUB_TOKEN),
+          # and the CLI exits non-zero if any check errors. Results are still written, so
+          # don't fail the job - the summary step reports what came back.
           ./scorecard --repo="github.com/${{ github.repository }}" \
-            --format json --output results.json
+            --format json --output results.json || true
       - name: Publish score to the run summary
         if: always()
         run: |
