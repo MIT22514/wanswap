@@ -12,7 +12,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # The official ossf/scorecard-action is a Docker action pulled from gcr.io, and that
       # registry currently refuses pulls ("This API method requires billing to be enabled").
       # The CLI avoids the registry. Note it no longer supports SARIF output, so the score is
